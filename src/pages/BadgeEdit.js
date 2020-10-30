@@ -1,15 +1,15 @@
 import React from "react";
 
-import "./styles/BadgeNew.css";
+import "./styles/BadgeEdit.css";
 import header from "../images/badge-header.svg";
 import Badge from "../components/Badge";
 import BadgeForm from "../components/BadgeForm";
 import api from "../api";
 import Skeleton from "react-loading-skeleton";
 
-class BadgeNew extends React.Component {
+class BadgeEdit extends React.Component {
   state = {
-    loading: false,
+    loading: true,
     error: null,
     form: {
       firstName: "",
@@ -18,6 +18,20 @@ class BadgeNew extends React.Component {
       jobTitle: "",
       twitter: "",
     },
+  };
+
+  componentDidMount() {
+    this.fecthData();
+  }
+
+  fecthData = async (e) => {
+    this.setState({ loading: true, error: null });
+    try {
+      const data = await api.badges.read(this.props.match.params.badgeId);
+      this.setState({ loading: false, form: data });
+    } catch (error) {
+      this.setState({ loading: false, error: error });
+    }
   };
 
   handleChange = (e) => {
@@ -32,7 +46,7 @@ class BadgeNew extends React.Component {
   handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await api.badges.create(this.state.form);
+      await api.badges.update(this.props.match.params.badgeId, this.state.form);
       this.setState({ loading: false });
       this.props.history.push("/badges");
     } catch (error) {
@@ -53,7 +67,7 @@ class BadgeNew extends React.Component {
         <div className="container">
           <div className="row">
             <div className="col-6">
-              <h1>New Attendant</h1>
+              <h1>EDIT </h1>
               <Badge
                 firstName={this.state.form.firstName || "FIRST NAME"}
                 lastName={this.state.form.lastName || "LAST NAME"}
@@ -78,4 +92,4 @@ class BadgeNew extends React.Component {
   }
 }
 
-export default BadgeNew;
+export default BadgeEdit;

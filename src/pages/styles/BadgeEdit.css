@@ -1,4 +1,4 @@
-.BadgeNew__hero {
+.BadgeEdit__hero {
   width: 100%;
   padding: 2rem 0;
   background: url("../../images/stars.svg"), #1b1b25;
@@ -7,6 +7,6 @@
   color: #ffffff;
 }
 
-.BadgeNew__hero img {
+.BadgeEdit__hero img {
   max-height: 100px;
 }
